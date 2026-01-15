@@ -22,6 +22,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+//refresh token endpoint is not accepting with headers but giving response
+//
+//login endpoint works only if the refresh token is expired , but the expired clean up of refresh token in db happens only on the call of function verifyExpiration
+//
+
+
 @RestController
 public class TokenController
 {
@@ -55,6 +62,7 @@ public class TokenController
         }
     }
 
+    //this endpoint is hit when access token is expired but refresh token is still alive
     @PostMapping("/auth/v1/refreshToken")
     public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
@@ -74,3 +82,4 @@ public class TokenController
     }
 
 }
+
