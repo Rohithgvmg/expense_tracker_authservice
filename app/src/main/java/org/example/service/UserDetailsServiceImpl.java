@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.example.DTO.UserInfoDto;
 import org.example.entities.UserInfo;
+import org.example.eventProducer.UserInfoProducer;
 import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +28,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserInfoProducer userInfoProducer;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
        UserInfo user=userRepository.findByUsername(username);
@@ -47,6 +51,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(Objects.nonNull(checkIfUserAlreadyExists(userInfoDto))){
             return false;
         }
+        //push event to kafka
+        userInfoProducer.sendEventToKafka(userInfoDto);
         userRepository.save(new UserInfo(userInfoDto.getUserName(),userInfoDto.getPassword(),new HashSet<>()));
         return true;
     }
