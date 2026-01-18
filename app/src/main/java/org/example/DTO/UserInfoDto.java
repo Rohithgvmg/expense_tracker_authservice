@@ -1,6 +1,7 @@
 package org.example.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,7 +19,8 @@ import java.util.Set;
 @Setter
 public class UserInfoDto {
 
-    private String userName;
+    @JsonProperty("username")
+    private String username;
 
     private String password;
 
@@ -30,10 +32,9 @@ public class UserInfoDto {
 
     private String email;
 
+    private String profilePic;
+
     private Set<UserRole> roles;
-
-
-
 
 }
 

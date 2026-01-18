@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public UserInfo checkIfUserAlreadyExists(UserInfoDto userInfoDto){
-        return userRepository.findByUsername(userInfoDto.getUserName());
+        return userRepository.findByUsername(userInfoDto.getUsername());
     }
 
     @Transactional
@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         //push event to kafka
         userInfoProducer.sendEventToKafka(userInfoDto);
-        userRepository.save(new UserInfo(userInfoDto.getUserName(),userInfoDto.getPassword(),new HashSet<>()));
+        userRepository.save(new UserInfo(userInfoDto.getUsername(),userInfoDto.getPassword(),new HashSet<>()));
         return true;
     }
 

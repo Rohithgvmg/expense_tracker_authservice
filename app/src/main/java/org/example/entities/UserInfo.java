@@ -26,6 +26,7 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+
     private String username;
 
     private String password;

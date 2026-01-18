@@ -37,7 +37,7 @@ public class AuthController
     public ResponseEntity SignUp(@RequestBody UserInfoDto userInfoDto){
         try {
             // 1. Validate the user isn't null before proceeding
-            if (userInfoDto.getUserName() == null) {
+            if (userInfoDto.getUsername() == null) {
                 return new ResponseEntity<>("Username is required", HttpStatus.BAD_REQUEST);
             }
 
@@ -49,9 +49,9 @@ public class AuthController
 
             // 3. IMPORTANT: Use the username directly from the DTO
             // Ensure createRefreshToken is @Transactional
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(userInfoDto.getUserName());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(userInfoDto.getUsername());
 
-            String jwtToken = jwtService.GenerateToken(userInfoDto.getUserName());
+            String jwtToken = jwtService.GenerateToken(userInfoDto.getUsername());
 
             return new ResponseEntity<>(JwtResponseDTO.builder()
                     .accessToken(jwtToken)
