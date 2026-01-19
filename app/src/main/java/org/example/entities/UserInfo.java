@@ -23,14 +23,9 @@ public class UserInfo {
 
     @Id
     @Column(name="user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-
-
+    private String userId;
     private String username;
-
     private String password;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="users_roles",

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -46,15 +47,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public Boolean signupUser(UserInfoDto userInfoDto){
-
+        String generatedUserId= UUID.randomUUID().toString();
+        userInfoDto.setUserId(generatedUserId);
         userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
         if(Objects.nonNull(checkIfUserAlreadyExists(userInfoDto))){
             return false;
         }
-        //push event to kafka
         userInfoProducer.sendEventToKafka(userInfoDto);
-        userRepository.save(new UserInfo(userInfoDto.getUsername(),userInfoDto.getPassword(),new HashSet<>()));
+        userRepository.save(new UserInfo(userInfoDto.getUserId(),userInfoDto.getUsername(),userInfoDto.getPassword(),new HashSet<>()));
         return true;
     }
-
 }
+

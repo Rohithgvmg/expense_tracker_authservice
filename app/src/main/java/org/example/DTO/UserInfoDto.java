@@ -19,21 +19,14 @@ import java.util.Set;
 @Setter
 public class UserInfoDto {
 
-    @JsonProperty("username")
+    private String userId;
     private String username;
-
     private String password;
-
     private String firstName;
-
     private String lastName;
-
     private Long phoneNumber;
-
     private String email;
-
     private String profilePic;
-
     private Set<UserRole> roles;
 
 }

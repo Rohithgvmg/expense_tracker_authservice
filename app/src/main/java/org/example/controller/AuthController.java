@@ -36,19 +36,17 @@ public class AuthController
     @PostMapping("/auth/v1/signup")
     public ResponseEntity SignUp(@RequestBody UserInfoDto userInfoDto){
         try {
-            // 1. Validate the user isn't null before proceeding
             if (userInfoDto.getUsername() == null) {
                 return new ResponseEntity<>("Username is required", HttpStatus.BAD_REQUEST);
             }
 
-            // 2. Perform the signup
+
             Boolean isSignedUp = userDetailsService.signupUser(userInfoDto);
             if (Boolean.FALSE.equals(isSignedUp)) {
                 return new ResponseEntity<>("User Already Exists", HttpStatus.BAD_REQUEST);
             }
 
-            // 3. IMPORTANT: Use the username directly from the DTO
-            // Ensure createRefreshToken is @Transactional
+
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userInfoDto.getUsername());
 
             String jwtToken = jwtService.GenerateToken(userInfoDto.getUsername());
@@ -59,7 +57,7 @@ public class AuthController
                     .build(), HttpStatus.OK);
 
         } catch (Exception ex) {
-            // Print the actual error to your console so you can see exactly what failed
+
             ex.printStackTrace();
             return new ResponseEntity<>("Exception in User Service: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
